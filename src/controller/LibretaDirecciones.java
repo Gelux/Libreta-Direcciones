@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -17,8 +19,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import model.Persona;
 
 /**
  *
@@ -26,10 +28,24 @@ import javafx.stage.Stage;
  */
 public class LibretaDirecciones extends Application {
     
+    private ObservableList datosPersona = FXCollections.observableArrayList();
     private Stage escenarioPrincipal;
     private BorderPane layoutPrincipal;
     private AnchorPane vistaPersona;
     
+    public LibretaDirecciones(){
+        
+        datosPersona.add(new Persona("Jesus", "Sanchez"));
+        datosPersona.add(new Persona("YO", "Si"));
+        datosPersona.add(new Persona("JEJE", "BUENO"));
+        datosPersona.add(new Persona("VENGA", "VAMOS"));
+        datosPersona.add(new Persona("VAMONOS", "ATOMOS"));
+        
+    }
+    
+    public ObservableList getDatosPersona(){
+        return datosPersona;
+    }
     
     @Override
     public void start(Stage escenarioPrincipal) {
