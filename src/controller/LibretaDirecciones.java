@@ -21,6 +21,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Persona;
+import view.VistaPersonaController;
 
 /**
  *
@@ -101,9 +102,12 @@ public class LibretaDirecciones extends Application {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        layoutPrincipal.setCenter(vistaPersona);
         
         //
-        layoutPrincipal.setCenter(vistaPersona);
+        //
+        VistaPersonaController controller = loader.getController();
+        controller.setLibretaDirecciones(this);
         
     }
     
