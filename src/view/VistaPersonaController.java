@@ -8,11 +8,14 @@ package view;
 
 import controller.LibretaDirecciones;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Persona;
+import util.UtilidadDeFechas;
 
 /**
  *
@@ -57,6 +60,12 @@ public class VistaPersonaController {
         nombreColumn.setCellValueFactory(new PropertyValueFactory<>(nombre));
         apellidosColumn.setCellValueFactory(new PropertyValueFactory<>(apellido));
         
+        //Borro los detalles de la persona
+        mostrarDetallesPersona(null);
+        
+        //Escucho cambios en la selección de la tabla y muestro los detalles en caso de cambio
+        tablaPersonas.getSelectionModel().selectedItemProperty().addListener(
+            (observable, oldValue, newValue) -> mostrarDetallesPersona((Persona) newValue));
     }
 
     //Es llamado por la apliación principal para tener una referencia de vuelta de si mismo
@@ -77,8 +86,7 @@ public class VistaPersonaController {
             direccionLabel.setText(persona.getDireccion());
             codigoPostalLabel.setText(Integer.toString(persona.getCodigoPostal()));
             ciudadLabel.setText(persona.getCiudad());
-            //TODO: Tenemos que convertir la fecha de nacimiento en un String 
-            //fechaDeNacimientoLabel.setText(...);
+            fechaDeNacimientoLabel.setText(UtilidadDeFechas.formato(persona.getFechaDeNacimiento()));
         } else {
             //Persona es null, vacío todos los labels.
             nombreLabel.setText("");
@@ -88,6 +96,25 @@ public class VistaPersonaController {
             ciudadLabel.setText("");
             fechaDeNacimientoLabel.setText("");
         }
+    }
+    
+    @FXML
+    private void borrarPersona() {
+        //Capturo el indice seleccionado y borro su item asociado de la tabla
+        int indiceSeleccionado = tablaPersonas.getSelectionModel().getSelectedIndex();
+        if (indiceSeleccionado >= 0){
+            //Borro item
+            tablaPersonas.getItems().remove(indiceSeleccionado);
+            
+        } else {
+            //Muestro alerta
+            Alert alerta = new Alert(AlertType.WARNING);
+            alerta.setTitle("Atención");
+            alerta.setHeaderText("Persona no seleccionada");
+            alerta.setContentText("Por favor, selecciona una persona de la tabla");
+            alerta.showAndWait();
+                        
+        }    
     }
     
     

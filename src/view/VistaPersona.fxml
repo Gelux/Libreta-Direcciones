@@ -63,7 +63,7 @@
                      <children>
                         <Button mnemonicParsing="false" text="Nuevo..." />
                         <Button mnemonicParsing="false" text="Editar..." />
-                        <Button mnemonicParsing="false" text="Eliminar" />
+                        <Button mnemonicParsing="false" onAction="#borrarPersona" text="Eliminar" />
                      </children>
                   </HBox>
                </children>
