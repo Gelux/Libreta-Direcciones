@@ -117,5 +117,34 @@ public class VistaPersonaController {
         }    
     }
     
+    //Muestro el diálogo editar persona cuando el usuario hace clic en el botón de Crear
+    @FXML
+    private void crearPersona() {
+        Persona temporal = new Persona();
+        boolean guardarClicked = libretaDirecciones.muestraEditarPersona(temporal);
+        if (guardarClicked) {
+            libretaDirecciones.getDatosPersona().add(temporal);
+        }
+    }
+    
+    //Muestro el diálogo editar persona cuando el usuario hace clic en el botón de Editar
+    @FXML
+    private void editarPersona() {
+        Persona seleccionada = (Persona) tablaPersonas.getSelectionModel().getSelectedItem();
+        if (seleccionada != null) {
+            boolean guardarClicked = libretaDirecciones.muestraEditarPersona(seleccionada);
+            if (guardarClicked) {
+                mostrarDetallesPersona(seleccionada);
+            }
+
+        } else {
+            //Muestro alerta
+            Alert alerta = new Alert(Alert.AlertType.WARNING);
+            alerta.setTitle("Alerta");
+            alerta.setHeaderText("Persona no seleccionada");
+            alerta.setContentText("Por favor, selecciona una persona");
+            alerta.showAndWait();
+        }
+    }
     
 }

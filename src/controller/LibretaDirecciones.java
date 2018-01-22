@@ -7,6 +7,8 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,8 +16,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Persona;
+import view.EditarPersonaController;
 import view.VistaPersonaController;
 
 /**
@@ -27,7 +31,7 @@ public class LibretaDirecciones extends Application {
     private ObservableList datosPersona = FXCollections.observableArrayList();
     private Stage escenarioPrincipal;
     private BorderPane layoutPrincipal;
-    private AnchorPane vistaPersona;
+    private AnchorPane vistaPersona, editarPersona;
     
     public LibretaDirecciones(){
         
@@ -109,5 +113,42 @@ public class LibretaDirecciones extends Application {
     public Stage getPrimaryStage(){
         return escenarioPrincipal;
     }
+    
+    //Vista editarPersona
+    public boolean muestraEditarPersona(Persona persona) {
+        
+        //Cargo la vista persona a partir de VistaPersona.fxml
+        FXMLLoader loader = new FXMLLoader();
+        URL location = LibretaDirecciones.class.getResource("../view/EditarPersona.fxml");
+        loader.setLocation(location);
+        try {
+            editarPersona = loader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(LibretaDirecciones.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        
+        //Creo el escenario de edición (con modal) y establezco la escena
+        Stage escenarioEdicion = new Stage();
+        escenarioEdicion.setTitle("Editar Persona");
+        //cuando le de a editar con el window modal no podras hacer nada en la ventana principal
+        escenarioEdicion.initModality(Modality.WINDOW_MODAL);
+        escenarioEdicion.initOwner(escenarioPrincipal);
+        Scene escena = new Scene(editarPersona);
+        escenarioEdicion.setScene(escena);
+        
+        //Asigno el escenario de edición y la persona seleccionada al controlador
+        EditarPersonaController controller = loader.getController();
+        controller.setEscenarioEdicion(escenarioEdicion);
+        controller.setPersona(persona);
+
+        //Muestro el diálogo ahjsta que el ussuario lo cierre
+        escenarioEdicion.showAndWait();
+        
+        //devuelvo el botón pulsado
+        return controller.isGuardarClicked();
+    
+    }
+    
     
 }
